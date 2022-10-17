@@ -1,0 +1,40 @@
+# coding: utf-8
+#include "smsl.h"
+
+class _num[num] (
+ func __new__[this, a] (
+  try (
+   return num[a]
+  except ValueError (
+   return float[a]
+  )
+ )
+)
+
+var cislo1 = new _num[input["Zadejte prvni cislo: "]]
+var cislo2 = new _num[input["Zadejte druhe cislo: "]]
+var op = new input["Zvolte pocetni operaci +-*/^odm: "]
+
+if op == "+" (
+ write[cislo1 + cislo2]
+)
+if op == "-" (
+ write[cislo1 - cislo2]
+)
+if op == "*" (
+ write[cislo1 * cislo2]
+)
+if op == "/" (
+ if cislo2 != 0 (
+  write[cislo1 / cislo2]
+ )
+ else (
+  write["Deleni nulou!"]
+ )
+)
+if op == "^" (
+ write[pow[cislo1, cislo2]]
+)
+if op == "odm" (
+ write[pow[cislo1, [1 / cislo2]]]
+)

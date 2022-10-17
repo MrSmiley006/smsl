@@ -1,0 +1,17 @@
+#include "smsl.h"
+class Papousek (
+    func papouskuj[this, text] (
+        for i in range[2] (
+            write[text]
+        )
+    )
+)
+
+var p = new Papousek[]
+while True (
+    var input_ = new input[]
+    if input_ == "exit" (
+        break
+    )
+    p.papouskuj[input_]
+)

@@ -1,0 +1,5 @@
+#include "smsl.h"
+#include "papousek.smsl"
+
+var p = new Papousek[]
+p.papouskuj[input[]]

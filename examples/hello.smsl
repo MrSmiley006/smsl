@@ -1,0 +1,8 @@
+#include "smsl.h"
+
+func a[] (
+    write["Hello, world!"]
+)
+
+a[]
+

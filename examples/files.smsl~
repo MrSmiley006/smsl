@@ -1,0 +1,6 @@
+#include "smsl.h"
+#include !stdlib.smsl!
+
+var file1 = new open["calc.smsl"]
+
+write[file1.read[]]
