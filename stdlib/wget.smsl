@@ -2,7 +2,7 @@
 
 from requests import get
 
-func download[url, filename] (
+func download[url] (
     response = get[url]
     if response.ok (
         return response.text
