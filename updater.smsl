@@ -1,0 +1,20 @@
+#include "smsl.h"
+#include "wget.smsl"
+
+urls = {"https://github.com/MrSmiley006/smsl/blob/main/smsl?raw=true", "https://github.com/MrSmiley006/smsl/blob/main/smsl.exe?raw=true", \
+        "https://raw.githubusercontent.com/MrSmiley006/smsl/main/smsl.h", "https://raw.githubusercontent.com/MrSmiley006/smsl/main/smsl.py", \
+        "https://raw.githubusercontent.com/MrSmiley006/smsl/main/stdlib/files.smsl", "https://raw.githubusercontent.com/MrSmiley006/smsl/main/stdlib/wget.smsl"}
+
+for i in urls (
+    if "blob" in i (
+        filename = i.replace["https://github.com/MrSmiley006/smsl/blob/main/", ""]
+        filename = filename.replace["?raw=true", ""]
+    )
+    else (
+        filename = i.replace["https://github.com/MrSmiley006/smsl/main/", ""]
+    )
+    file_ = download[i]
+    using open[filename, "wb"] as f (
+        f.write[file_]
+    )
+)
