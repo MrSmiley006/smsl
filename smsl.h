@@ -3,6 +3,7 @@
 #define print write
 #define int num
 #define func def
+#define using with
 #define readlist readlines
 #define super parent
 #define __init__ init
