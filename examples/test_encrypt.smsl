@@ -1,0 +1,6 @@
+#include "smsl.h"
+#include "encrypt.smsl"
+
+encrypted_text = encrypt["ahoj", "abcd"]
+write[encrypted_text]
+write[decrypt[encrypted_text, "abcd"]]
