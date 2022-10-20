@@ -4,7 +4,8 @@
 urls = {"https://github.com/MrSmiley006/smsl/blob/main/smsl?raw=true", "https://github.com/MrSmiley006/smsl/blob/main/smsl.exe?raw=true", \
         "https://raw.githubusercontent.com/MrSmiley006/smsl/main/smsl.h", "https://raw.githubusercontent.com/MrSmiley006/smsl/main/smsl.py", \
         "https://raw.githubusercontent.com/MrSmiley006/smsl/main/stdlib/files.smsl", "https://raw.githubusercontent.com/MrSmiley006/smsl/main/stdlib/wget.smsl", \
-        "https://raw.githubusercontent.com/MrSmiley006/smsl/main/updater.smsl"}
+        "https://raw.githubusercontent.com/MrSmiley006/smsl/main/updater.smsl", "https://raw.githubusercontent.com/MrSmiley006/smsl/main/stdlib/encrypt.smsl", \
+        "https://raw.githubusercontent.com/MrSmiley006/smsl/main/examples/test_encrypt.smsl"}
 
 for i in urls (
     if "blob" in i (
