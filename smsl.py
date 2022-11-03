@@ -1,6 +1,7 @@
 import sys, re, os
 
-def resolve_includes(code):
+def resolve_includes(code, namespace=None):
+    print(f"namespace: {namespace}")
     code_ = code.split("\n")
     include_type = ""
     for i in code_:
@@ -12,8 +13,30 @@ def resolve_includes(code):
             with open(include_file) as f:
                 code = re.sub(include.group(), f.read(), code)
                 include = re.match(r"#include \"[\w.]*\"", i)
+
+            if namespace != None:
+                regex = "namespace " + namespace + " \([\w\s=\"\[\],\(\)]+\)"
+                code_list = code.split(re.search(regex, code))
+                print(code_list)
+                for i in code_list:
+                    code = code.replace(i, "")
     ##print(code)
     return code
+
+def add_defines(code, user_replaces):
+    for i in code.split("\n"):
+        i = i.split()
+        #print(i)
+        try:
+            if i[0] == "#define":
+                user_replaces[i[1]] = i[2]
+                print(":D")
+            elif i[0] == "#undef":
+                del user_replaces[i[1]]
+        except IndexError:
+            pass
+
+    return user_replaces
 
 
 def run(stage, code=None):
@@ -48,7 +71,7 @@ def run(stage, code=None):
         """
         Přidá do SmSL souboru obsah všech souborů v něm uvedených (vyjma .h souborů)
         """
-        code = re.sub(r"#include smsl.h", "", code)
+        code = re.sub(r"#include \"smsl.h\"", "", code)
         include_files = []
         for i in code_:
             i = i.split(" ")
@@ -57,15 +80,46 @@ def run(stage, code=None):
                 include_files.append(i[1].replace('"', "").replace("!", ""))
 
         for i in include_files:
-            include_file = open(i)
-            resolved_file = resolve_includes(include_file.read())
+            i_ = re.sub(r":\w+", "", i)
+            try:
+                include_file = open(i_)
+            except FileNotFoundError:
+                include_file = open(os.environ["SMSL_STDLIB"] + "/" + i_)
+                
+            resolved_file = resolve_includes(include_file.read(), re.sub("\w+.smsl:", "", i))
+            print(f"i: {i.split(':')[1]}")
+            include_file.close()
+            if ":" in i:
+                i = re.sub("\w+:", "", i)
+                regex = "namespace " + i + " \([\w\s=\"\[\],\(\)]+\)"
+                namespace = re.search(regex, resolved_file)
+                if namespace != None:
+                    print(f"{namespace}")
+                    for i in resolved_file.split(namespace.group()):
+                        resolved_file = resolved_file.replace(i, "")
             code = resolved_file + code
         ##print(code)
 
+        code = code.split("\n")
+        user_replaces = dict()
+        for i in range(len(code)):
+            if len(code[i]) > 0:
+                #print(code[i].split()[0])
+                if code[i].split()[0] in ["#define", "#undef"]:
+                    user_replaces.update(add_defines(code[i], user_replaces))
+                    #print(f"user_replaces: {str(user_replaces)}")
+            for j in user_replaces:
+                j_ = j.replace("+", " ").replace("\\n", "\n").replace("\ ", "+")
+                if not code[i].startswith("#"):
+                    code[i] = code[i].replace(user_replaces[j], j_)
+        code = "\n".join(code)
+        print(code)
+        
         ##print(code)
         for i in replaces:
-            j = replaces[i].replace("+", " ")
-            i = i.replace("+", " ")
+            j = replaces[i].replace("+", " ").replace("\\n", "\n")
+            i = i.replace("+", " ").replace("\\n", "\n")
+            
             if not "-d" in sys.argv and not "--decompile" in sys.argv:
                 code = code.replace(j, i)
             else:
@@ -106,7 +160,7 @@ def run(stage, code=None):
             "DICT_START"  : "{",
             "DICT_END"    : "}",
             "LAMBDA"      : "lambda",
-            "func"        : "def",
+#           "func"        : "def",
             "write"       : "print",
             "WRITE"       : "write",
             "var "        : "",

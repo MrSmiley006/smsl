@@ -2,10 +2,12 @@
 #define func+WRITE func+write
 #define print write
 #define int num
-#define func def
-#define using with
+#define def func
+#define with using
+#define class namespace
 #define readlist readlines
 #define super parent
+#define sys.argv argv
 #define __init__ init
 #define del rem
 #define except catch
