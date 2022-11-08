@@ -1,0 +1,47 @@
+#include "smsl.h"
+
+func encrypt[text, key] (
+    ord_list = {}
+    for i in text (
+        ord_list.append[ord[i]]
+    )
+    if isinstance[key, str] (
+        key = list[key]
+        for i in range[len[key]] (
+            key{i} = ord[key{i}]
+        )
+    )
+    while len[key] <= len[ord_list] (
+        key = key * 2
+    )
+    encrypted = ""
+    for i in range[len[ord_list]] (
+        encrypted += str[ord_list{i} * key{i}] + " "
+    )
+    return encrypted
+)
+
+func decrypt[encrypted, key] (
+    if isinstance[encrypted, str] (
+        encrypted = encrypted.split[]
+        for i in range[len[encrypted]] (
+            if encrypted{i} != " " (
+                encrypted{i} = num[encrypted{i}]
+            )
+        )
+    )
+    if isinstance[key, str] (
+        key = list[key]
+        for i in range[len[key]] (
+            key{i} = ord[key{i}]
+        )
+    )
+    while len[key] <= len[encrypted] (
+        key = key * 2
+    )
+    decrypted = ""
+    for i in range[len[encrypted]] (
+        decrypted += str[chr[encrypted{i} // key{i}]]
+    )
+    return decrypted
+)
