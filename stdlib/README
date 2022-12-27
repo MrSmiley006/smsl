@@ -1,5 +1,9 @@
 Ve složce stdlib se nachází standardní knihovna pro jazyk SmSL.
 Standardní knihovna momentálně obsahuje tyto soubory:
 
-multios_utils.smsl
-stdlib.smsl
+wget.smsl
+buildtoolslib.smsl
+builtins.smsl
+encrypt.smsl
+parse_args.smsl
+warn.smsl
