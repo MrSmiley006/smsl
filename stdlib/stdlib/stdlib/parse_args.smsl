@@ -1,0 +1,9 @@
+#include "smsl.h"
+
+# -a
+# --abcd
+# --efgh=ijkl
+# -m nopq
+
+class Parser (
+    func init[this, *options, ] 

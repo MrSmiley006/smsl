@@ -1,0 +1,5 @@
+#include "smsl.h"
+
+func warn[text] (
+    return Warning[text]
+)
