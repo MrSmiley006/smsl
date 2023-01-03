@@ -7,6 +7,7 @@ SmSL je interpretovaný programovací jazyk kompatibliní s Pythonem resp. pytho
 ## Proč jsem SmSL vytvořil
 SmSL jsem vytvořil protože jsem chtěl vytvořit jednoduchý programovací jazyk, který ale zároveň bude mít odlišnou syntaxi od ostaních programovacích jazyků.
 
+## Další informace
 Soubory smsl a smsl.exe jsou samotný překladač jazyka SmSL ve verzi pro Windows a Linux.
 Soubor smsl.py je zdrojový kód SmSL překladače.
 Soubor smsl_docs-cs.odt/.pdf obsahuje dokumentaci k jazyku SmSL.
