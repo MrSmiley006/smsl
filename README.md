@@ -13,3 +13,4 @@ Soubor smsl.py je zdrojový kód SmSL překladače.
 Soubor smsl_docs-cs.odt/.pdf obsahuje dokumentaci k jazyku SmSL.
 Ve složce stdlib je standardní knihovna.
 Ve složce examples jsou ukázkové programy.
+SmSL si můžete stáhnout [zde]()
