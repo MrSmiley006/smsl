@@ -1,43 +1,9 @@
 #include "smsl.h"
 
-import sys
+# -a
+# --abcd
+# --efgh=ijkl
+# -m nopq
 
-class ArgParser (
-    func init[this, start, sopts_sep, lopts_sep, **options] (
-        this.options = options
-        this.start = start
-        this.sopts_sep = sopts_sep
-        this.lopts_sep = lopts_sep
-    )
-
-    func add_arg[this, name, value=None] (
-        this.options{name} = value
-    )
-
-    func del_arg[name] (
-        del this.options{name}
-    )
-
-    func parse[this] (
-        parsed = dict[]
-        for i in argv (
-            if i.startswith[this.start] (
-                if len[i] == 2 (
-                    i = i.split[this.sopts_sep]
-                )
-                else if len[i] == 1 (
-                    i = list[i]
-                )
-                else if i{1} == this.start (
-                    i = i.split[this.lopts_sep]
-                )
-                else (
-                    write[Warning[f"Nesprávně zadaný argument: {i}"]]
-                write[i]
-                if len[i] == 1 ( i.append[None] )
-                parsed{i{0}} = i{1}
-            )
-        )
-        return parsed
-    )
-)
+class Parser (
+    func init[this, *options, ] 

@@ -12,10 +12,10 @@ class list[list] (
             return super[].__init__[value]
         )
         except TypeError (
-            return eval[f"{value}", {}] # Přepsat co nejdřive
+            return eval[f"{value}", {||}] # Přepsat co nejdřive
         )
     )
-    func __init__[self, value] (
+    func init[self, value] (
         return self.__new__[value]
     )
     
@@ -81,11 +81,17 @@ else (
     tmp_dir = r"%HOMEDRIVE%\%HOMEPATH%\AppData\Local\Temp\smsl-cache"
 )
 
-func writef[filename, contents, append=False] (
-    if append (f = open[filename, "a"])
-    else (f = open[filename, "w"])
+func writef[filename, contents, append=False, binary=False] (
+    mode = "w"
+    if append (mode = "a")
+    if binary (mode += "b")
+    f = open[filename, mode]
     f.write[contents]
     f.close[]
+)
+
+func write[value, end, sep=""] (
+    print[value, end, sep]
 )
 
 func readf[filename, binary=False] (
@@ -94,6 +100,14 @@ func readf[filename, binary=False] (
     return f.read[]
 )
 
-func read[prompt] (
-    return input[prompt]
+func read[prompt, type=str, split=False, split_char=" "] (
+    input_ = input[prompt]
+    if split (
+        input_ = input_.split[split_char]
+        for i in range[len[input_]] (
+            input_{i} = type[input{i}]
+        )
+        return input_
+    )
+    else (return type[input_])
 )

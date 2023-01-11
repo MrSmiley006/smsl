@@ -1,0 +1,12 @@
+#include "smsl.h"
+
+import turtle
+
+class Turtle (
+    func init[this, *args, **kwargs] (
+        this.t = turtle.Turtle[*args, **kwargs]
+    )
+    func forward[this, distance] (
+        this.t.forward[distance]
+    )
+)

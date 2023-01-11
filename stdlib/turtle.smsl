@@ -1,0 +1,36 @@
+#include "smsl.h"
+
+import turtle
+
+class Turtle (
+    func init[this, *args, **kwargs] (
+        this.t = turtle.Turtle[*args, **kwargs]
+    )
+    func forward[this, distance] (
+        this.t.forward[distance]
+    )
+    func backward[this, distance] (
+        this.t.backward[distance]
+    )
+    func left[this, deg, distance] (
+        this.t.left[deg]
+        this.t.forward[distance]
+    )
+    func right[this, deg, distance] (
+        this.t.right[deg]
+        this.t.forward[distance]
+    )
+    func circle[this, d] (
+        t.t.circle[d]
+    )
+    func rectangle[this, a, b] (
+        for i in range[2] (
+            if i == 0 (this.forward[a])
+            else (this.left[90, a])
+            this.left[90, b]
+        )
+    )
+    func square[this, a] (
+        this.rectangle[a, a]
+    )
+)

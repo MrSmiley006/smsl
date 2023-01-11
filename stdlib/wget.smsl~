@@ -1,0 +1,11 @@
+#include "smsl.h"
+
+from requests import get
+
+func download[url, filename] (
+    response = get[url]
+    if response.ok (
+        return response.text
+    )
+)
+
