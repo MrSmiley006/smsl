@@ -1,5 +1,8 @@
 import sys, re, os
 
+from py7zr import SevenZipFile
+from zipfile import ZipFile, BadZipFile
+
 def resolve_includes(code, namespace=None):
     print(f"namespace: {namespace}")
     code_ = code.split("\n")
@@ -87,7 +90,7 @@ def run(stage, code=None):
                 include_file = open(os.environ["SMSL_STDLIB"] + "/" + i_)
                 
             resolved_file = resolve_includes(include_file.read(), re.sub("\w+.smsl:", "", i))
-            print(f"i: {i.split(':')[1]}")
+            #print(f"i: {i.split(':')[1]}")
             include_file.close()
             if ":" in i:
                 i = re.sub("\w+:", "", i)
@@ -103,7 +106,7 @@ def run(stage, code=None):
         code = code.split("\n")
         user_replaces = dict()
         for i in range(len(code)):
-            if len(code[i]) > 0:
+            if len(code[i]) > 0 and code[i].split() != []:
                 #print(code[i].split()[0])
                 if code[i].split()[0] in ["#define", "#undef"]:
                     user_replaces.update(add_defines(code[i], user_replaces))
@@ -113,7 +116,7 @@ def run(stage, code=None):
                 if not code[i].startswith("#"):
                     code[i] = code[i].replace(user_replaces[j], j_)
         code = "\n".join(code)
-        print(code)
+        if "--debug" in sys.argv: print(code)
         
         ##print(code)
         for i in replaces:
@@ -121,9 +124,9 @@ def run(stage, code=None):
             i = i.replace("+", " ").replace("\\n", "\n")
             
             if not "-d" in sys.argv and not "--decompile" in sys.argv:
-                code = code.replace(j, i)
-            else:
                 code = code.replace(i, j)
+            else:
+                code = code.replace(j, i)
         
         """indent_count = 0
         indented_code = []
@@ -161,11 +164,11 @@ def run(stage, code=None):
             "DICT_END"    : "}",
             "LAMBDA"      : "lambda",
 #           "func"        : "def",
-            "write"       : "print",
+#           "write"       : "print",
             "WRITE"       : "write",
             "var "        : "",
             "new"         : "",
-            "catch"       : "except",
+#           "catch"       : "except",
             "else if"     : "elif",
             "true"        : "True",
             "false"       : "False"
@@ -183,8 +186,18 @@ def run(stage, code=None):
     if stage == 2:
         code = compile(code, "pyfile.py", "exec")
         exec(code, globals(), globals())
-
-
+        
+        
 if __name__ == "__main__":
-    with open(sys.argv[1]) as f:
-        run(2, run(1, f.read()))
+    if sys.argv[1].endswith(".sar"):
+        try:
+            zf = ZipFile(sys.argv[1])
+        except BadZipFile:
+            zf = SevenZipFile(sys.argv[1], "r")
+        zf.extractall(path="smsl_cache/")
+        tmp_dir = "smsl_cache"
+        code_file = os.path.join(tmp_dir, "main.smsl")
+    else:
+        code_file = sys.argv[1]
+    with open(code_file) as f:
+        run(2, run(1, '#include "builtins.smsl"\n' + f.read()))
