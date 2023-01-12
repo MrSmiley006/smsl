@@ -2,7 +2,7 @@
 A programming language/Programovací jazyk
 
 ## Co je SmSL
-SmSL je interpretovaný programovací jazyk kompatibliní s Pythonem resp. pythonovskými knihovnami. Nenamená to, že můžeme v SmSL souborech používat libovolně kód v Pythonu. Zatím je možné pouze používat v SmSL pythonovské knihovny pomocí příkazu `import`. 
+SmSL je interpretovaný programovací jazyk kompatibliní s Pythonem resp. pythonovskými knihovnami. Neznamená to, že můžeme v SmSL souborech používat libovolně kód v Pythonu. Zatím je možné pouze používat v SmSL pythonovské knihovny pomocí příkazu `import`. 
 
 ## Proč jsem SmSL vytvořil
 SmSL jsem vytvořil protože jsem chtěl vytvořit jednoduchý programovací jazyk, který ale zároveň bude mít odlišnou syntaxi od ostaních programovacích jazyků.
