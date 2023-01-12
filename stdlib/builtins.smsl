@@ -90,7 +90,7 @@ func writef[filename, contents, append=False, binary=False] (
     f.close[]
 )
 
-func write[value, end, sep=""] (
+func write[value, end="", sep=""] (
     print[value, end, sep]
 )
 
