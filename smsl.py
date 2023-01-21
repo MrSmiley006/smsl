@@ -52,7 +52,12 @@ def run(stage, code=None):
         """
         if include_h:
             #print(include_h)
-            with open(include_h.group().replace("#include ", "").replace('"', "")) as def_file:
+            try:
+                h_file_path = os.environ["SMSL_H"]
+            except KeyError:
+                if os.name == "nt": h_file_path = r"C:\Program Files\smsl\\"
+                else: h_file_path = "/usr/local/include/"
+            with open(os.path.join(h_file_path, include_h.group().replace("#include ", "").replace('"', ""))) as def_file:
                 define = def_file.readlines()
                 for i in define:
                     #print(i)
