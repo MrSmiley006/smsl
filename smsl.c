@@ -8,7 +8,6 @@ int main(int argc, char *argv[]) {
 		printf("<> - povinný parametr, [] - nepovinný parametr\n");
 		return 1;
 	}
-	//argv[0] = ' ';
 	char command[100] = "python\\python.exe smsl.py ";
 	strcat(command, argv[1]);
 	if (argc == 3) {
