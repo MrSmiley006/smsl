@@ -1,10 +1,10 @@
-import sys, re, os
+import sys, re, os, random
 
 from py7zr import SevenZipFile
 from zipfile import ZipFile, BadZipFile
 
 def resolve_includes(code, namespace=None):
-    print(f"namespace: {namespace}")
+    ##print(f"namespace: {namespace}")
     code_ = code.split("\n")
     include_type = ""
     for i in code_:
@@ -20,20 +20,20 @@ def resolve_includes(code, namespace=None):
             if namespace != None:
                 regex = "namespace " + namespace + " \([\w\s=\"\[\],\(\)]+\)"
                 code_list = code.split(re.search(regex, code))
-                print(code_list)
+                ##print(code_list)
                 for i in code_list:
                     code = code.replace(i, "")
-    ##print(code)
+    ###print(code)
     return code
 
 def add_defines(code, user_replaces):
     for i in code.split("\n"):
         i = i.split()
-        #print(i)
+        ##print(i)
         try:
             if i[0] == "#define":
                 user_replaces[i[1]] = i[2]
-                print(":D")
+                #print(":D")
             elif i[0] == "#undef":
                 del user_replaces[i[1]]
         except IndexError:
@@ -51,7 +51,7 @@ def run(stage, code=None):
         Ten se následně použije k nahrazení závorek a klíčových slov.
         """
         if include_h:
-            #print(include_h)
+            ##print(include_h)
             try:
                 h_file_path = os.environ["SMSL_H"]
             except KeyError:
@@ -60,7 +60,7 @@ def run(stage, code=None):
             with open(os.path.join(h_file_path, include_h.group().replace("#include ", "").replace('"', ""))) as def_file:
                 define = def_file.readlines()
                 for i in define:
-                    #print(i)
+                    ##print(i)
                     type(i)
                     if i.startswith("#define "):
                         i = i.replace("#define ", "").replace("\n", "")
@@ -73,7 +73,7 @@ def run(stage, code=None):
                     if len(i) == 1: i.append("")
                     try: replaces[i[0]]
                     except KeyError: replaces[i[0]] = i[1]
-                #print(replaces)
+                ##print(replaces)
 
         code_ = code.split("\n")
         """
@@ -95,44 +95,37 @@ def run(stage, code=None):
                 include_file = open(os.environ["SMSL_STDLIB"] + "/" + i_)
                 
             resolved_file = resolve_includes(include_file.read(), re.sub("\w+.smsl:", "", i))
-            #print(f"i: {i.split(':')[1]}")
+            ##print(f"i: {i.split(':')[1]}")
             include_file.close()
             if ":" in i:
                 i = re.sub("\w+:", "", i)
                 regex = "namespace " + i + " \([\w\s=\"\[\],\(\)]+\)"
                 namespace = re.search(regex, resolved_file)
                 if namespace != None:
-                    print(f"{namespace}")
+                    ##print(f"{namespace}")
                     for i in resolved_file.split(namespace.group()):
                         resolved_file = resolved_file.replace(i, "")
             code = resolved_file + code
-        ##print(code)
+        ###print(code)
 
         code = code.split("\n")
-        user_replaces = dict()
+        user_replaces = replaces#dict()
         for i in range(len(code)):
             if len(code[i]) > 0 and code[i].split() != []:
-                #print(code[i].split()[0])
+                ##print(code[i].split()[0])
                 if code[i].split()[0] in ["#define", "#undef"]:
                     user_replaces.update(add_defines(code[i], user_replaces))
-                    #print(f"user_replaces: {str(user_replaces)}")
-            for j in user_replaces:
-                j_ = j.replace("+", " ").replace("\\n", "\n").replace("\ ", "+")
+                    ##print(f"user_replaces: {str(user_replaces)}")
+            for j, k in user_replaces.items():
+                j = j.replace("+", " ").replace("\\n", "\n").replace("\ ", "+")
+                k = k.replace("+", " ").replace("\\n", "\n").replace("\ ", "+")\
+                                                            .replace("RAND", "_" + str(random.randint(1111, 9999)))
                 if not code[i].startswith("#"):
-                    code[i] = code[i].replace(user_replaces[j], j_)
+                    code[i] = code[i].replace(j, k)
         code = "\n".join(code)
-        if "--debug" in sys.argv: print(code)
         
-        ##print(code)
-        for i in replaces:
-            j = replaces[i].replace("+", " ").replace("\\n", "\n")
-            i = i.replace("+", " ").replace("\\n", "\n")
-            
-            if not "-d" in sys.argv and not "--decompile" in sys.argv:
-                code = code.replace(i, j)
-            else:
-                code = code.replace(j, i)
-        
+        ###print(code)
+
         """indent_count = 0
         indented_code = []
         indent = ""
@@ -155,7 +148,7 @@ def run(stage, code=None):
                 f.write(code)
                 sys.exit()
 
-        #print(code)
+        ##print(code)
 
 
         py_replaces = {
@@ -175,8 +168,8 @@ def run(stage, code=None):
             "new"         : "",
 #           "catch"       : "except",
             "else if"     : "elif",
-            "true"        : "True",
-            "false"       : "False"
+#           "true"        : "True",
+#           "false"       : "False"
         }
 
         for i in py_replaces:
