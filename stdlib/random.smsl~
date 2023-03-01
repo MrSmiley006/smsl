@@ -1,0 +1,5 @@
+#include "smsl.h"
+
+func random[max] (
+    return rand_gen.rand_gen[] % max
+)

@@ -5,34 +5,43 @@ func encrypt[text, key] (
     for i in text (
         ord_list.append[ord[i]]
     )
-    key_list = {}
-    for i in key (
-        key_list.append[ord[i]]
+    if isinstance[key, str] (
+        key = list[key]
+        for i in range[len[key]] (
+            key{i} = ord[key{i}]
+        )
     )
-    while len[key_list] < len[ord_list] (
-        key_list = key_list * 2
+    while len[key] <= len[ord_list] (
+        key = key * 2
     )
     encrypted = ""
     for i in range[len[ord_list]] (
-        encrypted += str[ord_list{i} * key_list{i}] + " "
+        encrypted += str[ord_list{i} * key{i}] + " "
     )
     return encrypted
 )
-func decrypt[text, key] (
-    encrypted = {}
-    for i in text.split[] (
-        if i != " " (encrypted.append[int[i]])
+
+func decrypt[encrypted, key] (
+    if isinstance[encrypted, str] (
+        encrypted = encrypted.split[]
+        for i in range[len[encrypted]] (
+            if encrypted{i} != " " (
+                encrypted{i} = num[encrypted{i}]
+            )
+        )
     )
-    key_list = {}
-    for i in key (
-        key_list.append[ord[i]]
+    if isinstance[key, str] (
+        key = list[key]
+        for i in range[len[key]] (
+            key{i} = ord[key{i}]
+        )
     )
-    while len[key_list] < len[encrypted] (
-        key_list = key_list * 2
+    while len[key] <= len[encrypted] (
+        key = key * 2
     )
     decrypted = ""
     for i in range[len[encrypted]] (
-        decrypted += chr[encrypted{i} // key_list{i}]
+        decrypted += str[chr[encrypted{i} // key{i}]]
     )
     return decrypted
 )

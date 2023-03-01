@@ -1,0 +1,9 @@
+#include "smsl.h"
+
+import rand_gen
+
+func random[max=None] (
+    rand_num = rand_gen.rand_gen[]
+    if max == None (return rand_num)
+    return rand_num % max
+)

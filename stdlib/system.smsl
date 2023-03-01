@@ -1,0 +1,24 @@
+#include "smsl.h"
+
+import system
+if system.OS == "windows" (import beep)
+
+class CommandNotFoundError[Exception]:
+    pass
+
+func exec_command[command] (
+    return_val = system.system[command]
+    if return_val == 512 (raise FileNotFoundError)
+    else if return_val == 32512 (raise CommandNotFoundError)
+    else if return_val == -1 (raise RuntimeError)
+)
+
+func clear[] (
+    if system.OS == "windows" (exec_command["cls"])
+    else (exec_command["clear"])
+)
+
+func beep[freq, time] (
+    if system.OS == "windows" (beep.beep[freq, time])
+    else (exec_command[f"speaker-test -f {|freq|} -b {|time|} -t sine -l 1 > /dev/null"])
+)

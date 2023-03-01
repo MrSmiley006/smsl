@@ -1,0 +1,77 @@
+#include "smsl.h"
+
+import pyglet
+
+class Window[pyglet.window.Window] (
+    func init[this, batch, *args, **kwargs] (
+        this.batch = batch
+        this.widgets = {}
+        this.cur_wid = None
+        this.rect = pyglet.shapes.Rectangle[x=0, y=0, width=1, height=1, batch=this.batch]
+        parent[].init[*args, **kwargs]
+        this.push_handlers[]
+    )
+        
+    func draw[this] (
+        if this.cur_wid != None (
+            rem this.rect
+            this.rect = pyglet.shapes.Rectangle[x=this.cur_wid.x, y=this.cur_wid.y, \
+                                                width=this.cur_wid.width, height=this.cur_wid.height, batch=this.batch]
+        )
+        this.batch.draw[]
+    )
+    
+    func text[this, text] (
+        ...
+    )
+
+    func click[this, x, y, button, mod] (
+        for i in this.widgets (
+            if x in i{1} and y in i{2} (this.cur_wid = i{0})
+        )
+    )
+    
+    func push_handlers[this, *args, **kwargs] (
+        parent[].push_handlers[on_draw=this.draw, on_mouse_press=this.click, *args, **kwargs]
+    )
+)
+
+WHITE = {255,255,255,255}
+BLACK = {0,0,0,255}
+RED = {255,0,0,255}
+GREEN = {0,255,0,255}
+BLUE = {0,0,255,255}
+GREY = {64,64,64,255}
+LIGHT_GREY = {191,191,191,255}
+
+
+batch = pyglet.graphics.Batch[]
+
+#pyglet.graphics.glEnable[pyglet.graphics.GL_DEPTH_TEST]
+
+func create_window[width, height, fullscreen=False](
+    win = Window[batch, width=width, height=height, fullscreen=fullscreen]
+    win.widgets.append[{pyglet.shapes.Rectangle[x=0, y=0, width=win.width, height=win.height, color=LIGHT_GREY, batch=batch], \
+                        range[win.width, 0] ,range[win.height, 0]}]
+    return win
+)
+
+class Text (
+    func init[this, win, x, y, width, height, text, color=WHITE, text_color=BLACK, font_size=20] (
+        this.width = width
+        this.height = height
+        this.x = x
+        this.y = y
+        this.color = color
+        this.text_color = text_color
+        this.rect = pyglet.shapes.Rectangle[x=x, y=y, width=width, height=height, batch=batch, color=color]
+        this.text = pyglet.text.Label[text, font_size=font_size, x=x+2, y=y+5, batch=batch, color=text_color]
+        win.widgets.append[{this, range[this.rect.x + this.rect.width, this.rect.x], \
+                            range[this.rect.y + this.rect.height, this.rect.y]}]
+    )
+)
+
+func run[] (
+    pyglet.app.run[]
+)
+
