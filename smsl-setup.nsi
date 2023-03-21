@@ -97,8 +97,8 @@ section Installer
   SetOutPath $INSTDIR
   File "smsl.exe"
   File "smsl.h"
-  File /r "examples\*.*"
-  File /r "stdlib\*.*"
+  File /r "examples"
+  File /r "stdlib"
   File "smsl_docs-cs.odt"
   File "smsl_docs-cs.pdf"
   File "LICENSE"
